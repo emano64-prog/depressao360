@@ -20,9 +20,9 @@ return res.status(500).json({ error: 'GEMINI_API_KEY não configurada.' });
 const body = req.body || {};
 const textContent = body.contents || body.prompt || body.briefing || body.message || (typeof body === 'string' ? body : JSON.stringify(body));
 
-// Usando gemini-pro na v1, que é o modelo mais estável e universal para chaves de API
+// Usando gemini-1.5-flash na v1beta (que é a versão padrão permitida para chaves do AI Studio)
 const response = await fetch(
-`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`,
+`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
 {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
