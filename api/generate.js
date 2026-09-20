@@ -13,7 +13,6 @@ return res.status(500).json({ error: 'GEMINI_API_KEY não foi configurada na Ver
 
 const ai = new GoogleGenAI({ apiKey });
 
-// Captura o texto enviado pelo formulário, independentemente do nome do campo
 const body = req.body || {};
 const textContent = body.contents || body.prompt || body.briefing || body.message || (typeof body === 'string' ? body : JSON.stringify(body));
 
@@ -22,7 +21,14 @@ model: 'gemini-2.5-flash',
 contents: textContent,
 });
 
-return res.status(200).json({ text: response.text });
+const generatedText = response.text || '';
+
+// Retorna nos formatos mais comuns esperados por interfaces React/AI Studio
+return res.status(200).json({
+text: generatedText,
+result: generatedText,
+candidates: [{ content: { parts: [{ text: generatedText }] } }]
+});
 } catch (error) {
 console.error(error);
 return res.status(500).json({ error: error.message || 'Erro ao processar requisição na API.' });
