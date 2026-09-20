@@ -17,7 +17,7 @@ const body = req.body || {};
 const textContent = body.contents || body.prompt || body.briefing || body.message || (typeof body === 'string' ? body : JSON.stringify(body));
 
 const response = await ai.models.generateContent({
-model: 'gemini-1.5-flash',
+model: 'gemini-2.0-flash',
 contents: textContent,
 });
 
