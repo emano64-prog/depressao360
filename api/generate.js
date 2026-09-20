@@ -12,11 +12,14 @@ return res.status(500).json({ error: 'GEMINI_API_KEY não foi configurada na Ver
 }
 
 const ai = new GoogleGenAI({ apiKey });
-const { prompt, contents } = req.body;
+
+// Captura o texto enviado pelo formulário, independentemente do nome do campo
+const body = req.body || {};
+const textContent = body.contents || body.prompt || body.briefing || body.message || (typeof body === 'string' ? body : JSON.stringify(body));
 
 const response = await ai.models.generateContent({
 model: 'gemini-2.5-flash',
-contents: contents || prompt,
+contents: textContent,
 });
 
 return res.status(200).json({ text: response.text });
